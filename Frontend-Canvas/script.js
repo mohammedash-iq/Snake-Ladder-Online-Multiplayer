@@ -55,16 +55,37 @@ diceBtn.addEventListener("click", () => {
     if (currentPlayer === "P1") {
         const diceNum = rollDice();
         diceResult.innerText = diceNum;
-        changePlayerPostion("P1", player1Position + diceNum)
+        if ((player1Position + diceNum) in snakes) {
+            console.log("in snakes")
+        }
+        else if ((player1Position + diceNum) in ladders) {
+            console.log("in ladders")
+        }
+        else if ((player1Position + diceNum) === 100) {
+            console.log(`${currentPlayer} won`)
+        }
+        else {
+            changePlayerPostion("P2", player2Position, player2Position + diceNum);
+        }
         currentPlayer = "P2";
         currentPlayerName.textContent = "Player 2";
         player1Position += diceNum;
     }
     else {
-        console.log("hi")
         const diceNum = rollDice();
         diceResult.innerText = diceNum;
-        changePlayerPostion("P2", player2Position + diceNum)
+        if ((player2Position + diceNum) in snakes) {
+            console.log("in snakes")
+        }
+        else if ((player2Position + diceNum) in ladders) {
+            console.log("in ladders")
+        }
+        else if ((player2Position + diceNum) === 100) {
+            console.log(`${currentPlayer} won`)
+        }
+        else {
+            changePlayerPostion("P2", player2Position, player2Position + diceNum);
+        }
         currentPlayer = "P1";
         currentPlayerName.innerHTML = "Player 1";
         player2Position += diceNum;
@@ -75,16 +96,16 @@ function rollDice() {
     return Math.floor(randInt);
 }
 
-function changePlayerPostion(player, newposition) {
+function changePlayerPostion(player, oldPosition, newposition) {
     if (player === "P1") {
-        const prevPos = document.getElementById(`box${player1Position}`)
-        prevPos.classList.remove("player-1-postion-indicator");
+        const prevPos = document.getElementById(`box${oldPosition}`);
+        prevPos.classList.remove("player-1-position-indicator");
         const newPos = document.getElementById(`box${newposition}`)
         newPos.classList.add("player-1-position-indicator");
     }
     else {
-        const prevPos = document.getElementById(`box${player1Position}`)
-        prevPos.classList.remove("player-2-postion-indicator");
+        const prevPos = document.getElementById(`box${oldPosition}`)
+        prevPos.classList.remove("player-2-position-indicator");
         const newPos = document.getElementById(`box${newposition}`)
         newPos.classList.add("player-2-position-indicator");
     }
