@@ -5,14 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snakes and Ladders</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="game-container">
         <div id="board" class="board"></div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        const board = document.getElementById('board');
+        const snakes = {
+            16: 6, 47: 26, 49: 11, 56: 53, 62: 19,
+            64: 60, 87: 24, 93: 73, 95: 75, 98: 78
+        };
+
+        const ladders = {
+            1: 38, 4: 14, 9: 31, 21: 42, 28: 84,
+            36: 44, 51: 67, 71: 91, 80: 100, 85: 97
+        };
+
+        for (let i = 0; i < 10; i = i + 2) {
+            for (let j = (i + 1) * 10; j > i * 10; j--) {
+                const cell = document.createElement('div');
+                console.log(j)
+                cell.textContent = j;
+                board.appendChild(cell);
+            }
+            for (let k = ((i + 1) * 10) + 1; k <= (i + 2) * 10; k++) {
+                const cell = document.createElement('div');
+                console.log(k)
+                cell.textContent = k;
+                board.appendChild(cell);
+            }
+        }
+    </script>
 </body>
 
 </html>
