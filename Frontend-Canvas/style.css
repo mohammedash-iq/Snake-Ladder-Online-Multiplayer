@@ -1,5 +1,13 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgb(50, 50, 50);
+    color: antiquewhite;
+}
+
 .game-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .board {
@@ -32,5 +40,5 @@
 }
 
 .two-player-indicator {
-    background-image: linear-gradient(180deg, red, blue;
-    }
+    background-image: linear-gradient(180deg, red, blue);
+}
