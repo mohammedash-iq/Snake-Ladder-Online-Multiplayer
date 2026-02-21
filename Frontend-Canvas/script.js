@@ -2,6 +2,7 @@ const board = document.getElementById('board');
 const currentPlayerName = document.getElementById("current-player-name")
 const diceBtn = document.getElementById("dice-btn")
 const diceResult = document.getElementById("dice-result")
+const resetBtn = document.getElementById("reset-btn")
 
 //code for loading the board
 const snakes = {
@@ -68,6 +69,7 @@ diceBtn.addEventListener("click", () => {
         else if ((player1Position + diceNum) === 100) {
             alert("Player 2 won!")
             changePlayerPostion("P1", player1Position, player1Position + diceNum);
+            resetGame()
         }
         else {
             if ((player1Position + diceNum) < 100) {
@@ -95,6 +97,7 @@ diceBtn.addEventListener("click", () => {
         else if ((player2Position + diceNum) === 100) {
             alert("Player 1 won!")
             changePlayerPostion("P2", player2Position, ladderEnd);
+            resetGame()
         }
         else {
             if ((player2Position + diceNum) < 100) {
@@ -132,4 +135,12 @@ function changePlayerPostion(player, oldPosition, newposition) {
         newPos.classList.add("player-2-position-indicator");
 
     }
+
 }
+function resetGame() {
+    player1Position = 1;
+    player2Position = 2;
+    alert("Game is being reset!")
+}
+
+resetBtn.addEventListener("click", resetGame)
