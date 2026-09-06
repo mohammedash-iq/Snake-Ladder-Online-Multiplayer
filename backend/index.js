@@ -14,7 +14,6 @@ websocket.on("connection", (socket) => {
     })
     socket.on("close", () => {
         handleWebSocketDisconnections(socket);
-
     })
 }
 )
