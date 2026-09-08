@@ -12,7 +12,7 @@ function handleSocketRecieve({ navigateFunction }) {
     }
     socket.onmessage = (event) => {
         const parsedData = JSON.parse(event.data)
-        if (parsedData.type === "waiting") {
+        if (parsedData.type === "WAITING") {
             console.log(parsedData)
             navigateFunction("/waiting");
         }
@@ -23,20 +23,20 @@ function handleSocketRecieve({ navigateFunction }) {
             gameUpdates.updateGameUpdates(parsedData.message);
             diceVal.updateDiceVal(parsedData.dice)
         }
-        else if (parsedData.type === "win") {
+        else if (parsedData.type === "WIN") {
             alert('You won')
         }
-        else if (parsedData.type === "lose") {
+        else if (parsedData.type === "LOST") {
             alert("you lose")
         }
-        else if (parsedData.type === "start") {
+        else if (parsedData.type === "GAME-STARTED") {
             console.log(parsedData)
             navigateFunction("/arena")
         }
-        else if (parsedData.type === "move") {
-            playerData.updatePlayer({ player1: parsedData.player1Position, player2: parsedData.player2Position })
-            gameUpdates.updateGameUpdates(parsedData.message)
-            diceVal.updateDiceVal(parsedData.dice);
+        else if (parsedData.type === "MOVE") {
+            playerData.updatePlayer({ player1: parsedData.payload.P1POS, player2: parsedData.payload.P2POS })
+            gameUpdates.updateGameUpdates(parsedData.payload.message)
+            diceVal.updateDiceVal(parsedData.payload.dice);
         }
     }
 }

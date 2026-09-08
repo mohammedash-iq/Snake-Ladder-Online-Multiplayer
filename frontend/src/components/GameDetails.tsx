@@ -3,7 +3,7 @@ function GameDetails() {
     const diceVal = useDice((state) => state.diceVal);
     function rollDice() {
         const socketObj = useSocket.getState()
-        socketObj.socketConnection.send(JSON.stringify({ "type": "roll" }));
+        socketObj.socketConnection.send(JSON.stringify({ "request": "DICE-ROLL" }));
     }
     return (
         <>

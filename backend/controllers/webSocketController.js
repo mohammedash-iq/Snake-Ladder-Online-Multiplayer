@@ -1,27 +1,27 @@
-import GameRoom from "../class/Game.js"
+import { handleStartGame } from "../controllers/gameLogicController.js"
 import { liveGames } from "../store/gameStore.js";
 
 const waitingList = [];
+// handles socket connections for a new player and adds him to the waiting list or gives him a player to play with
 function handleWebSocketConnections(socket) {
     if (waitingList.length === 0 || socket in waitingList) {
         waitingList.push(socket);
-        socket.send(JSON.stringify({ "type": "waiting" }))
+        socket.send(JSON.stringify({ "type": "WAITING", "payload": { "message": "waiting for other player to join!" } }))
     }
     else {
-        const roomId = crypto.randomUUID();
         const player1 = socket;
         const player2 = waitingList.shift();
-        liveGames[roomId] = new GameRoom(player1, player2);
-        liveGames[roomId].startGame(roomId);
+        liveGames.push({ "P1": player1, "P2": player2, "P1POS": 1, "P2POS": 1, "TURN": "P1" })
+        handleStartGame({ socket1: player1, socket2: player2 })
     }
 }
+
 function handleWebSocketDisconnections(socket) {
     if (waitingList.find((ele) => ele == socket)) {
         waitingList.pop(socket);
     }
     else if (socket.gameData.roomId in liveGames) {
-        liveGames[socket.gameData.roomId].handleLostConnection({ leftPlayer: socket.gameData.player, content: "the other player left! you win" });
-        liveGames.pop(socket.gameData.roomId);
+        //handles live games
     }
 }
 export { handleWebSocketConnections, handleWebSocketDisconnections };
