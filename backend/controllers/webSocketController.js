@@ -1,4 +1,5 @@
 import { handleStartGame } from "../controllers/gameLogicController.js"
+import { findLiveGames } from "../services/gameroomServices.js"
 import { liveGames } from "../store/gameStore.js";
 
 const waitingList = [];
@@ -15,13 +16,23 @@ function handleWebSocketConnections(socket) {
         handleStartGame({ socket1: player1, socket2: player2 })
     }
 }
-
+//handles the socket connection close
 function handleWebSocketDisconnections(socket) {
+    //checks weather the player is already in the waiting list, if yes the player will be removed from the list.
     if (waitingList.find((ele) => ele == socket)) {
         waitingList.pop(socket);
+        return;
     }
-    else if (socket.gameData.roomId in liveGames) {
-        //handles live games
+    //checks the player in the gamerooms and gracefully realease the connection and lets the other player know the player has left.
+    const gameroom = findLiveGames({ "socketToBeFound": socket });
+    {
+        if (gameroom.TURN === "P1" && gameroom.P1 == playerSocketObject) {
+            gameroom.P2.send(JSON.stringify({ "type": "WON", "payload": { "message": "The other player has left! You Won!" } }))
+            return;
+        } else if (gameroom.TURN === "P2" && gameroom.P2 == playerSocketObject) {
+            gameroom.P1.send(JSON.stringify({ "type": "WON", "payload": { "message": "The other player has left! You Won!" } }))
+            return;
+        }
     }
 }
 export { handleWebSocketConnections, handleWebSocketDisconnections };

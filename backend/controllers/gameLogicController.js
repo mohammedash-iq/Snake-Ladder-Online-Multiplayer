@@ -1,4 +1,6 @@
-import { liveGames } from "../store/gameStore.js"
+import {findLiveGames} from "../services/gameroomServices.js"
+
+
 const snakes = {
     16: 6, 47: 26, 49: 11, 56: 53, 62: 19,
     64: 60, 87: 24, 93: 73, 95: 75, 98: 78
@@ -15,7 +17,7 @@ function handleStartGame({ socket1, socket2 }) {
 }
 
 function handlePlayerTurn({ playerSocketObject }) {
-    const result = findliveGame({ "socketToBeFound": playerSocketObject })
+    const result = findLiveGames({ "socketToBeFound": playerSocketObject })
     if (result.found) {
         // condition below checks weather  its the palyer's turn to make the move and if yes handles the move.
         if (result.object.TURN === "P1" && result.object.P1 == playerSocketObject) {
@@ -119,14 +121,5 @@ function handleUserUpdation({ gameroom, message, diceValue }) {
     gameroom.P2.send(JSON.stringify({ "type": "MOVE", payload: { "P1POS": gameroom.P1POS, "P2POS": gameroom.P2POS, "message": message, "dice": diceValue } }))
 }
 
-// finds the game room from the livegames list.
-function findliveGame({ socketToBeFound }) {
 
-    for (let i = 0; i < liveGames.length; i++) {
-        if (liveGames[i].P1 == socketToBeFound || liveGames[i].P2 == socketToBeFound) {
-            return { "found": true, "object": liveGames[i] }
-        }
-        return { "found": false }
-    }
-}
 export { handleNotValidMove, handleStartGame, handlePlayerTurn }
