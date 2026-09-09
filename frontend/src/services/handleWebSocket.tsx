@@ -16,14 +16,11 @@ function handleSocketRecieve({ navigateFunction }) {
             console.log(parsedData)
             navigateFunction("/waiting");
         }
-        else if (parsedData.type === "invalid-player") {
-            alert(parsedData.message)
-        }
-        else if (parsedData.type === "invalid-move") {
+        else if (parsedData.type === "INVALID-MOVE") {
             gameUpdates.updateGameUpdates(parsedData.message);
             diceVal.updateDiceVal(parsedData.dice)
         }
-        else if (parsedData.type === "WIN") {
+        else if (parsedData.type === "WON") {
             alert('You won')
         }
         else if (parsedData.type === "LOST") {
